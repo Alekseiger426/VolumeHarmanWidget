@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Volume Harman Widget</string>
+    <string name="minus">Уменьшить</string>
+    <string name="plus">Увеличить</string>
+</resources>
