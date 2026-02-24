@@ -1,0 +1,32 @@
+name: Build APK                     # Имя процесса
+
+on: [push]                          # Запускать при каждом push в репозиторий
+
+jobs:
+  build:                            # Название задачи
+    runs-on: ubuntu-latest          # Операционная система для сборки
+
+    steps:                          # Шаги, которые нужно выполнить
+      - name: Checkout code         # 1. Скачать код из репозитория
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17         # 2. Установить Java (нужна для сборки Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK    # 3. Установить Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant permission       # 4. Дать права на выполнение gradlew
+        run: chmod +x gradlew
+
+      - name: Build APK              # 5. Собрать отладочный APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK             # 6. Сохранить полученный APK как артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
